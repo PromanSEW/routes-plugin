@@ -1,7 +1,8 @@
-package com.andromeda.routesplugin;
+package com.github.promansew.routehints;
 
 import com.intellij.codeInsight.hints.*;
 import com.intellij.lang.Language;
+import com.intellij.lang.java.JavaLanguage;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.Nls;
@@ -12,8 +13,7 @@ import javax.swing.*;
 
 @SuppressWarnings("UnstableApiUsage")
 public class RouteInlayHintsProvider implements InlayHintsProvider<NoSettings> {
-
-    private static final SettingsKey<NoSettings> KEY = new SettingsKey<>("PlayRoute");
+    private static final SettingsKey<NoSettings> KEY = new SettingsKey<>("PlayRouteHints");
 
     @Override
     public boolean isVisibleInSettings() {
@@ -26,11 +26,11 @@ public class RouteInlayHintsProvider implements InlayHintsProvider<NoSettings> {
         return KEY;
     }
 
-    @Nls(capitalization = Nls.Capitalization.Sentence)
     @NotNull
     @Override
+    @Nls(capitalization = Nls.Capitalization.Sentence)
     public String getName() {
-        return "Play route inlay hints";
+        return RoutesBundle.message("provider.name");
     }
 
     @Nullable
@@ -58,11 +58,11 @@ public class RouteInlayHintsProvider implements InlayHintsProvider<NoSettings> {
     @Nullable
     @Override
     public InlayHintsCollector getCollectorFor(@NotNull PsiFile psiFile, @NotNull Editor editor, @NotNull NoSettings settings, @NotNull InlayHintsSink sink) {
-        return new RouteHintsCollector(editor);
+        return new RouteInlayHintsCollector(editor);
     }
 
     @Override
     public boolean isLanguageSupported(@NotNull Language language) {
-        return language.getID().equals("JAVA");
+        return language.is(JavaLanguage.INSTANCE);
     }
 }

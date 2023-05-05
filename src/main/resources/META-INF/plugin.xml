@@ -1,11 +1,11 @@
 <idea-plugin>
-    <id>com.andromeda.routes-plugin</id>
+    <id>com.github.promansew.play-routes-plugin</id>
     <name>Route Inlay Hints</name>
-    <vendor email="andromeda.coders@gmail.com" url="https://true.fishing">Andromeda Coders</vendor>
-    <description>Route inlay hints for controller actions</description>
+    <vendor email="promansew@gmail.com" url="https://andromeda-coders.ru">Roman Parshikov</vendor>
+    <description>Route inlay hints for controller actions in Play Framework</description>
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.java</depends>
     <extensions defaultExtensionNs="com.intellij">
-        <codeInsight.inlayProvider language="JAVA" implementationClass="com.andromeda.routesplugin.RouteInlayHintsProvider"/>
+        <codeInsight.inlayProvider language="JAVA" implementationClass="com.github.promansew.routehints.RouteInlayHintsProvider"/>
     </extensions>
 </idea-plugin>

@@ -1,4 +1,4 @@
-package com.andromeda.routesplugin;
+package com.github.promansew.routehints;
 
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.vfs.VirtualFile;
