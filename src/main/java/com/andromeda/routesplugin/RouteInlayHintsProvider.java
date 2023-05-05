@@ -30,7 +30,7 @@ public class RouteInlayHintsProvider implements InlayHintsProvider<NoSettings> {
     @NotNull
     @Override
     public String getName() {
-        return "Route";
+        return "Play route inlay hints";
     }
 
     @Nullable
