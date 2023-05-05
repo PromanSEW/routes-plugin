@@ -31,15 +31,18 @@ public class RouteHintsCollector extends FactoryInlayHintsCollector {
         }
         var returnType = method.getReturnType();
         if (returnType == null || !returnType.equalsToText("play.mvc.Result")) return true;
-        var reference = ReferencesSearch.search(element, new RoutesSearchScope()).findFirst();
-        if (reference == null) return true;
         int offset = element.getTextOffset();
-        element = reference.getElement();
+        ReferencesSearch.search(element, new RoutesSearchScope()).forEach(reference -> {
+            addRoute(sink, reference.getElement(), offset);
+        });
+        return true;
+    }
+
+    private void addRoute(@NotNull InlayHintsSink sink, @NotNull PsiElement element, int offset) {
         var document = element.getContainingFile().getViewProvider().getDocument();
         int end = element.getTextOffset();
         int start = document.getLineStartOffset(document.getLineNumber(end));
         var presentation = getFactory().text(document.getText(TextRange.create(start, end)).trim());
         sink.addBlockElement(offset, true, true, BlockInlayPriority.CODE_VISION_USAGES, presentation);
-        return true;
     }
 }
