@@ -5,6 +5,7 @@ import com.intellij.codeInsight.hints.InlayHintsSink;
 import com.intellij.openapi.editor.BlockInlayPriority;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiMethod;
@@ -34,8 +35,11 @@ public class RouteInlayHintsCollector extends FactoryInlayHintsCollector {
         var document = element.getContainingFile().getViewProvider().getDocument();
         int end = element.getTextOffset();
         int start = document.getLineStartOffset(document.getLineNumber(end));
-        var presentation = getFactory().text(document.getText(TextRange.create(start, end)).trim());
-        sink.addBlockElement(offset, true, true, BlockInlayPriority.CODE_VISION_USAGES, presentation);
+        var factory = getFactory();
+        var text = factory.text(document.getText(TextRange.create(start, end)).trim());
+        var presentation = factory.psiSingleReference(text, () -> element);
+        presentation = factory.seq(factory.text(StringUtil.repeat(" ", 8)), presentation);
+        sink.addBlockElement(offset, false, true, BlockInlayPriority.CODE_VISION_USAGES, presentation);
     }
 
     private static boolean isInteresting(PsiElement element) {
