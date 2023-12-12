@@ -10,12 +10,16 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiModifier;
+import com.intellij.psi.search.SearchScope;
 import com.intellij.psi.search.searches.ReferencesSearch;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("UnstableApiUsage")
 public class RouteInlayHintsCollector extends FactoryInlayHintsCollector {
+
+    private final SearchScope searchScope = new RoutesSearchScope();
+
     public RouteInlayHintsCollector(@NotNull Editor editor) {
         super(editor);
     }
@@ -25,7 +29,7 @@ public class RouteInlayHintsCollector extends FactoryInlayHintsCollector {
         if (!element.isValid() || element.getProject().isDefault()) return false;
         if (!isInteresting(element)) return true;
         int offset = element.getTextOffset();
-        ReferencesSearch.search(element, new RoutesSearchScope()).forEach(reference -> {
+        ReferencesSearch.search(element, searchScope).forEach(reference -> {
             addRoute(sink, reference.getElement(), offset);
         });
         return true;
@@ -38,7 +42,7 @@ public class RouteInlayHintsCollector extends FactoryInlayHintsCollector {
         var factory = getFactory();
         var text = factory.text(document.getText(TextRange.create(start, end)).trim());
         var presentation = factory.psiSingleReference(text, () -> element);
-        presentation = factory.seq(factory.text(StringUtil.repeat(" ", 8)), presentation);
+        presentation = factory.seq(factory.text(StringUtil.repeat(" ", 10)), presentation);
         sink.addBlockElement(offset, false, true, BlockInlayPriority.CODE_VISION_USAGES, presentation);
     }
 
